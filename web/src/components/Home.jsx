@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function Home({ agents, connected, onSelectAgent, onSettingsClick }) {
+function Home({ agents, connected, onSelectAgent, onSettingsClick, onBabyPredictorClick }) {
     const [goal, setGoal] = useState('');
     const [files, setFiles] = useState('');
     const [showFiles, setShowFiles] = useState(false);
@@ -69,7 +69,12 @@ function Home({ agents, connected, onSelectAgent, onSettingsClick }) {
                     <h1>Zero</h1>
                     <span className={`conn-dot ${connected ? 'on' : 'off'}`} />
                 </div>
-                <button className="settings-btn" onClick={onSettingsClick} aria-label="Settings">⚙</button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                    <button className="baby-nav-btn" onClick={onBabyPredictorClick} aria-label="Baby Predictor" title="Baby Predictor">
+                        Baby
+                    </button>
+                    <button className="settings-btn" onClick={onSettingsClick} aria-label="Settings">⚙</button>
+                </div>
             </header>
 
             <div className="new-agent">

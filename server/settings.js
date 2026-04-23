@@ -10,6 +10,7 @@ const defaults = {
     provider: 'claude', // 'claude' or 'gemini'
     claudeApiKey: '',
     geminiApiKey: '',
+    togetherApiKey: '',
     model: 'claude-sonnet-4-20250514'
 };
 

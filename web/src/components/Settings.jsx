@@ -5,6 +5,7 @@ function Settings({ onBack }) {
         provider: 'claude',
         claudeApiKey: '',
         geminiApiKey: '',
+        togetherApiKey: '',
         model: 'claude-sonnet-4-20250514'
     });
     const [saving, setSaving] = useState(false);
@@ -22,6 +23,7 @@ function Settings({ onBack }) {
         // Don't send masked keys
         if (toSave.claudeApiKey?.startsWith('••••')) delete toSave.claudeApiKey;
         if (toSave.geminiApiKey?.startsWith('••••')) delete toSave.geminiApiKey;
+        if (toSave.togetherApiKey?.startsWith('••••')) delete toSave.togetherApiKey;
 
         await fetch('/api/settings', {
             method: 'POST',
@@ -87,6 +89,18 @@ function Settings({ onBack }) {
                         value={settings.geminiApiKey}
                         onChange={e => setSettings({ ...settings, geminiApiKey: e.target.value })}
                     />
+                </div>
+
+                <div className="setting-group">
+                    <label>Together AI API Key <span style={{ fontWeight: 400, color: 'var(--fg3)' }}>(Baby Predictor)</span></label>
+                    <input
+                        type="password"
+                        className="setting-input"
+                        placeholder="..."
+                        value={settings.togetherApiKey}
+                        onChange={e => setSettings({ ...settings, togetherApiKey: e.target.value })}
+                    />
+                    <span style={{ fontSize: 11, color: 'var(--fg3)' }}>Required for image generation at together.ai</span>
                 </div>
 
                 <button className="save-btn" onClick={handleSave} disabled={saving}>
