@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Home from './components/Home';
 import AgentDetail from './components/AgentDetail';
 import Settings from './components/Settings';
+import BabyPredictor from './components/BabyPredictor';
 
 function App() {
     const [agents, setAgents] = useState([]);
@@ -80,6 +81,10 @@ function App() {
         return <Settings onBack={() => setView('home')} />;
     }
 
+    if (view === 'baby') {
+        return <BabyPredictor onBack={() => setView('home')} />;
+    }
+
     if (view === 'agent' && selectedAgent) {
         return (
             <AgentDetail
@@ -95,6 +100,7 @@ function App() {
             connected={connected}
             onSelectAgent={openAgent}
             onSettingsClick={() => setView('settings')}
+            onBabyPredictorClick={() => setView('baby')}
         />
     );
 }

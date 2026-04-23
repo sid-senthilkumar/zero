@@ -179,13 +179,39 @@ app.delete('/api/agents/:id/files', async (req, res) => {
 // ─── Settings API ────────────────────────────────────────
 
 import { getSettings, saveSettings } from './settings.js';
+import { predictBaby } from './babyPredictor.js';
+
+// ─── Baby Predictor API ───────────────────────────────────
+
+// Allow large base64 image payloads (up to 20MB)
+app.use('/api/baby', express.json({ limit: '20mb' }));
+
+app.post('/api/baby/predict', async (req, res) => {
+    try {
+        const { momImage, dadImage, momMimeType, dadMimeType, gender } = req.body;
+        if (!momImage || !dadImage) {
+            return res.status(400).json({ error: 'Both parent images are required.' });
+        }
+        const result = await predictBaby({
+            momImageBase64: momImage,
+            dadImageBase64: dadImage,
+            momMimeType: momMimeType || 'image/jpeg',
+            dadMimeType: dadMimeType || 'image/jpeg',
+            gender: gender || 'surprise'
+        });
+        res.json(result);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
 
 app.get('/api/settings', async (req, res) => {
   const settings = await getSettings();
   res.json({
     ...settings,
     claudeApiKey: settings.claudeApiKey ? '••••' + settings.claudeApiKey.slice(-4) : '',
-    geminiApiKey: settings.geminiApiKey ? '••••' + settings.geminiApiKey.slice(-4) : ''
+    geminiApiKey: settings.geminiApiKey ? '••••' + settings.geminiApiKey.slice(-4) : '',
+    togetherApiKey: settings.togetherApiKey ? '••••' + settings.togetherApiKey.slice(-4) : ''
   });
 });
 
